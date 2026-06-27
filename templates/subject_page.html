@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ subject.name }}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="min-h-screen bg-slate-100 text-slate-800">
+    <div class="mx-auto max-w-5xl px-4 py-10">
+      <div class="rounded-2xl border border-slate-200 bg-white p-8 shadow-xl">
+        <div class="mb-6 flex items-center justify-between gap-4">
+          <div>
+            <h1 class="text-2xl font-semibold">{{ subject.name }}</h1>
+            <p class="text-sm text-slate-500">Add questions to this subject and manage them here.</p>
+          </div>
+          <a href="{{ url_for('index') }}" class="rounded-lg bg-slate-700 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800">Back Home</a>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="mb-4 rounded-md border px-3 py-2 text-sm {% if category == 'danger' %}border-red-200 bg-red-50 text-red-700{% elif category == 'success' %}border-green-200 bg-green-50 text-green-700{% else %}border-yellow-200 bg-yellow-50 text-yellow-700{% endif %}">
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        <div class="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
+          <div>
+            <h2 class="mb-3 text-lg font-semibold">Questions in this subject</h2>
+            {% if questions %}
+              <ul class="space-y-3">
+                {% for question in questions %}
+                  <li class="rounded-lg border border-slate-200 bg-slate-50 p-3">
+                    <p class="font-medium">{{ question.question_text }}</p>
+                    <p class="mt-1 text-sm text-slate-600">Correct answer: {{ question.correct_option }}</p>
+                  </li>
+                {% endfor %}
+              </ul>
+            {% else %}
+              <p class="rounded-lg border border-dashed border-slate-300 p-4 text-sm text-slate-500">No questions yet for this subject.</p>
+            {% endif %}
+          </div>
+
+          <div>
+            <h2 class="mb-3 text-lg font-semibold">Add a question</h2>
+            <form method="post" class="space-y-3">
+              <textarea name="question_text" rows="3" placeholder="Question text" required class="w-full rounded-lg border border-slate-300 px-3 py-3 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"></textarea>
+              <input type="text" name="option_a" placeholder="Option A" required class="w-full rounded-lg border border-slate-300 px-3 py-3 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100" />
+              <input type="text" name="option_b" placeholder="Option B" required class="w-full rounded-lg border border-slate-300 px-3 py-3 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100" />
+              <input type="text" name="option_c" placeholder="Option C" required class="w-full rounded-lg border border-slate-300 px-3 py-3 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100" />
+              <input type="text" name="option_d" placeholder="Option D" required class="w-full rounded-lg border border-slate-300 px-3 py-3 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100" />
+              <input type="text" name="correct_option" placeholder="Correct option (a, b, c, or d)" required class="w-full rounded-lg border border-slate-300 px-3 py-3 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100" />
+              <button type="submit" class="w-full rounded-lg bg-blue-600 px-4 py-3 text-sm font-semibold text-white hover:bg-blue-700">Add Question</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

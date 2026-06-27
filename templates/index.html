@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Online Quiz App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Online Quiz App</h1>
+      <p>Test your knowledge with a quick quiz.</p>
+      <div class="actions">
+        <a class="button" href="{{ url_for('quiz') }}">Start Quiz</a>
+        <a class="button secondary" href="{{ url_for('admin_login') }}">Admin Login</a>
+      </div>
+
+      <h2>Available Subjects</h2>
+      <ul>
+        {% for subject in subjects %}
+        <li><a class="text-blue-600 hover:underline" href="{{ url_for('subject_page', subject_id=subject.id) }}">{{ subject.name }}</a></li>
+        {% else %}
+        <li>No subjects yet.</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </body>
+</html>

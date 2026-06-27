@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="flex items-center justify-between gap-4">
+        <div>
+          <h1>Admin Panel</h1>
+          <p>Add subjects and questions for the quiz.</p>
+        </div>
+        <a class="button secondary" href="{{ url_for('admin_logout') }}">Logout</a>
+      </div>
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="flash {{ category }}">{{ message }}</div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+
+      <h2>Add Subject</h2>
+      <form method="post">
+        <input type="hidden" name="form_type" value="subject" />
+        <input type="text" name="subject_name" placeholder="Enter subject name" required />
+        <button class="button" type="submit">Add Subject</button>
+      </form>
+
+      <h2>Add Question</h2>
+      <form method="post">
+        <input type="hidden" name="form_type" value="question" />
+        <select name="question_subject_id" required>
+          <option value="">Choose a subject</option>
+          {% for subject in subjects %}
+          <option value="{{ subject.id }}">{{ subject.name }}</option>
+          {% endfor %}
+        </select>
+        <textarea name="question_text" rows="3" placeholder="Question text" required></textarea>
+        <input type="text" name="option_a" placeholder="Option A" required />
+        <input type="text" name="option_b" placeholder="Option B" required />
+        <input type="text" name="option_c" placeholder="Option C" required />
+        <input type="text" name="option_d" placeholder="Option D" required />
+        <input type="text" name="correct_option" placeholder="Correct option (a, b, c, or d)" required />
+        <button class="button" type="submit">Add Question</button>
+      </form>
+
+      <h2>Existing Questions</h2>
+      <ul>
+        {% for question in questions %}
+        <li>
+          <strong>{{ question.question_text }}</strong>
+          <br />
+          Subject: {{ question.subject.name if question.subject else 'Unassigned' }}
+        </li>
+        {% else %}
+        <li>No questions yet.</li>
+        {% endfor %}
+      </ul>
+
+      <a class="button secondary" href="{{ url_for('index') }}">Back Home</a>
+    </div>
+  </body>
+</html>

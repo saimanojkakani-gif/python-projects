@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Take Quiz</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Quiz</h1>
+      <form method="post">
+        <label for="participant_name">Your Name</label>
+        <input id="participant_name" name="participant_name" placeholder="Enter your name" required />
+
+        {% for question in questions %}
+        <div class="question-card">
+          <p><strong>{{ loop.index }}. {{ question.question_text }}</strong></p>
+          <label><input type="radio" name="q{{ question.id }}" value="a" required /> {{ question.option_a }}</label><br />
+          <label><input type="radio" name="q{{ question.id }}" value="b" /> {{ question.option_b }}</label><br />
+          <label><input type="radio" name="q{{ question.id }}" value="c" /> {{ question.option_c }}</label><br />
+          <label><input type="radio" name="q{{ question.id }}" value="d" /> {{ question.option_d }}</label>
+        </div>
+        {% endfor %}
+
+        <button class="button" type="submit">Submit Quiz</button>
+      </form>
+    </div>
+  </body>
+</html>
